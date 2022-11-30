@@ -38,8 +38,8 @@ int main(void) {
 ISR(TIMER1_OVF_vect) { 
 	cli();
 
-	TCNT1H = 0xFF; //0.002√  (20ms, 50Hz, duty cycle = 5%)
-	TCNT1L = 0xFB;
+	TCNT1H = 0xFE; //0.02√  (20ms, 50Hz, duty cycle = 5%)
+	TCNT1L = 0xC6;
 
 	ADCSRA |= 0x40; //ADC start, (1<<ADSC)
 
@@ -47,7 +47,7 @@ ISR(TIMER1_OVF_vect) {
 
 	ADC_Low = ADCL;  //Low value First
 	ADC_High = ADCH;
-	ADC_Result = ADC_Low + ADC_High * 256;
+	ADC_Result = (ADC_Low + ADC_High * 256) / 30;
 
 	flag++;
 
