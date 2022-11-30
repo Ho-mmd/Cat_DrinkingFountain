@@ -2,6 +2,15 @@ Archive member included because of file (symbol)
 
 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
                               c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o (exit)
+c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                              LevWaterCat.o (__do_clear_bss)
+
+Allocating common symbols
+Common symbol       size              file
+
+ADC_High            0x1               LevWaterCat.o
+ADC_Low             0x1               LevWaterCat.o
+ADC_Result          0x2               LevWaterCat.o
 
 Memory Configuration
 
@@ -113,7 +122,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x16e
+.text           0x00000000      0x192
  *(.vectors)
  .vectors       0x00000000       0x8c c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
                 0x00000000                __vectors
@@ -153,6 +162,8 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
  *(.init4)
  .init4         0x00000098       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
                 0x00000098                __do_copy_data
+ .init4         0x000000b2       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x000000b2                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -163,56 +174,58 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000000b2        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ .init9         0x000000c2        0x8 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
  *(.init9)
  *(.text)
- .text          0x000000ba        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
-                0x000000ba                __vector_22
-                0x000000ba                __vector_28
-                0x000000ba                __vector_1
-                0x000000ba                __vector_32
-                0x000000ba                __vector_34
-                0x000000ba                __vector_24
-                0x000000ba                __vector_12
-                0x000000ba                __bad_interrupt
-                0x000000ba                __vector_6
-                0x000000ba                __vector_31
-                0x000000ba                __vector_3
-                0x000000ba                __vector_23
-                0x000000ba                __vector_30
-                0x000000ba                __vector_25
-                0x000000ba                __vector_11
-                0x000000ba                __vector_13
-                0x000000ba                __vector_17
-                0x000000ba                __vector_19
-                0x000000ba                __vector_7
-                0x000000ba                __vector_27
-                0x000000ba                __vector_5
-                0x000000ba                __vector_33
-                0x000000ba                __vector_4
-                0x000000ba                __vector_9
-                0x000000ba                __vector_2
-                0x000000ba                __vector_21
-                0x000000ba                __vector_15
-                0x000000ba                __vector_8
-                0x000000ba                __vector_26
-                0x000000ba                __vector_14
-                0x000000ba                __vector_10
-                0x000000ba                __vector_16
-                0x000000ba                __vector_18
-                0x000000ba                __vector_20
- .text          0x000000be       0xac LevWaterCat.o
-                0x000000be                main
-                0x000000e4                __vector_29
- .text          0x0000016a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
-                0x0000016a                . = ALIGN (0x2)
+ .text          0x000000ca        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+                0x000000ca                __vector_22
+                0x000000ca                __vector_28
+                0x000000ca                __vector_1
+                0x000000ca                __vector_32
+                0x000000ca                __vector_34
+                0x000000ca                __vector_24
+                0x000000ca                __vector_12
+                0x000000ca                __bad_interrupt
+                0x000000ca                __vector_6
+                0x000000ca                __vector_31
+                0x000000ca                __vector_3
+                0x000000ca                __vector_23
+                0x000000ca                __vector_30
+                0x000000ca                __vector_25
+                0x000000ca                __vector_11
+                0x000000ca                __vector_13
+                0x000000ca                __vector_17
+                0x000000ca                __vector_19
+                0x000000ca                __vector_7
+                0x000000ca                __vector_27
+                0x000000ca                __vector_5
+                0x000000ca                __vector_33
+                0x000000ca                __vector_4
+                0x000000ca                __vector_9
+                0x000000ca                __vector_2
+                0x000000ca                __vector_21
+                0x000000ca                __vector_15
+                0x000000ca                __vector_29
+                0x000000ca                __vector_8
+                0x000000ca                __vector_26
+                0x000000ca                __vector_10
+                0x000000ca                __vector_16
+                0x000000ca                __vector_18
+                0x000000ca                __vector_20
+ .text          0x000000ce       0xc0 LevWaterCat.o
+                0x000000ce                main
+                0x000000f4                __vector_14
+ .text          0x0000018e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text          0x0000018e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x0000018e                . = ALIGN (0x2)
  *(.text.*)
- .text.libgcc   0x0000016a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
-                0x0000016a                . = ALIGN (0x2)
+ .text.libgcc   0x0000018e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .text.libgcc   0x0000018e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
+                0x0000018e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000016a        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
-                0x0000016a                exit
-                0x0000016a                _exit
+ .fini9         0x0000018e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+                0x0000018e                exit
+                0x0000018e                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -231,43 +244,51 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000016a        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .fini0         0x0000018e        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000016e                _etext = .
+                0x00000192                _etext = .
 
-.data           0x00800100        0x2 load address 0x0000016e
+.data           0x00800100        0x0 load address 0x00000192
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
- .data          0x00800100        0x2 LevWaterCat.o
-                0x00800100                flag
- .data          0x00800102        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .data          0x00800100        0x0 LevWaterCat.o
+ .data          0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .data          0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800102                . = ALIGN (0x2)
-                0x00800102                _edata = .
-                0x00800102                PROVIDE (__data_end, .)
+                0x00800100                . = ALIGN (0x2)
+                0x00800100                _edata = .
+                0x00800100                PROVIDE (__data_end, .)
 
-.bss            0x00800102        0x0
-                0x00800102                PROVIDE (__bss_start, .)
+.bss            0x00800100        0x9
+                0x00800100                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x00800102        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
- .bss           0x00800102        0x0 LevWaterCat.o
- .bss           0x00800102        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .bss           0x00800100        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr51/crtm128.o
+ .bss           0x00800100        0x5 LevWaterCat.o
+                0x00800100                cnt
+                0x00800101                flag
+                0x00800103                temp
+ .bss           0x00800105        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_exit.o)
+ .bss           0x00800105        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a(_clear_bss.o)
  *(.bss*)
  *(COMMON)
-                0x00800102                PROVIDE (__bss_end, .)
-                0x0000016e                __data_load_start = LOADADDR (.data)
-                0x00000170                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800105        0x4 LevWaterCat.o
+                0x00800105                ADC_High
+                0x00800106                ADC_Low
+                0x00800107                ADC_Result
+                0x00800109                PROVIDE (__bss_end, .)
+                0x00000192                __data_load_start = LOADADDR (.data)
+                0x00000192                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800102        0x0
-                0x00800102                PROVIDE (__noinit_start, .)
+.noinit         0x00800109        0x0
+                0x00800109                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800102                PROVIDE (__noinit_end, .)
-                0x00800102                _end = .
-                0x00800102                PROVIDE (__heap_start, .)
+                0x00800109                PROVIDE (__noinit_end, .)
+                0x00800109                _end = .
+                0x00800109                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -324,36 +345,35 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr51\libgcc.a
                 0x00000000       0x20 LevWaterCat.o
 
 .debug_pubnames
-                0x00000000       0x34
+                0x00000000       0x6d
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000       0x34 LevWaterCat.o
+                0x00000000       0x6d LevWaterCat.o
 
-.debug_info     0x00000000      0x17f
+.debug_info     0x00000000      0x100
  *(.debug_info)
- .debug_info    0x00000000      0x17f LevWaterCat.o
+ .debug_info    0x00000000      0x100 LevWaterCat.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000       0xf6
+.debug_abbrev   0x00000000       0x7f
  *(.debug_abbrev)
- .debug_abbrev  0x00000000       0xf6 LevWaterCat.o
+ .debug_abbrev  0x00000000       0x7f LevWaterCat.o
 
-.debug_line     0x00000000      0x1b2
+.debug_line     0x00000000      0x132
  *(.debug_line)
- .debug_line    0x00000000      0x1b2 LevWaterCat.o
+ .debug_line    0x00000000      0x132 LevWaterCat.o
 
 .debug_frame    0x00000000       0x30
  *(.debug_frame)
  .debug_frame   0x00000000       0x30 LevWaterCat.o
 
-.debug_str      0x00000000       0xcf
+.debug_str      0x00000000       0xad
  *(.debug_str)
- .debug_str     0x00000000       0xcf LevWaterCat.o
-                                0x103 (size before relaxing)
+ .debug_str     0x00000000       0xad LevWaterCat.o
+                                 0xe1 (size before relaxing)
 
-.debug_loc      0x00000000       0x58
+.debug_loc
  *(.debug_loc)
- .debug_loc     0x00000000       0x58 LevWaterCat.o
 
 .debug_macinfo
  *(.debug_macinfo)

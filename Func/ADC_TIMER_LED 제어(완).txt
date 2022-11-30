@@ -20,7 +20,7 @@ int main(void) {
 	TCCR1A = 0x00; 
 	TCCR1B = 0x05; //clk select
 
-	TCNT1H = 0xFF; //√ ±‚ø° overflow πﬂª˝Ω√±‚ ¥Á±Ë
+	TCNT1H = 0xFF; //Ï¥àÍ∏∞Ïóê overflow Î∞úÏÉùÏãúÍ∏∞ ÎãπÍπÄ
 	TCNT1L = 0xC0;
 
 	ADMUX = 0x00;
@@ -36,7 +36,7 @@ int main(void) {
 ISR(TIMER1_OVF_vect) { 
 	cli();
 
-	TCNT1H = 0xFF; //0.002√  (20ms, 50Hz, duty cycle = 5%)
+	TCNT1H = 0xFF; //0.002Ï¥à (20ms, 50Hz, duty cycle = 5%)
 	TCNT1L = 0xFB;
 
 	ADCSRA |= 0x40; //ADC start, (1<<ADSC)
