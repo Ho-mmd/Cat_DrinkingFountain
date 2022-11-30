@@ -7,6 +7,8 @@ volatile unsigned int flag = 0;
 volatile unsigned int ADC_Result;
 volatile unsigned char ADC_Low, ADC_High;
 
+//LED(v)
+
 int main(void) {
 	
 	cli();
