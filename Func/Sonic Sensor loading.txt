@@ -12,7 +12,7 @@ int main(){
 	DDRB = 0xFF; // Output
 	DDRF = 0xFF; // Trig
 	DDRD = 0x00; // Ehco
-	EICRA = (0<<ISC31) | (0<<ISC30) | (0<<ISC21) | (0<<ISC20) | (1<<ISC11) | (0<<ISC11) | (0<<ISC01) | (0<<ISC00); // ÃÊ±â°ª = ¶óÀÌÂ¡¿§Áö
+	EICRA = (0<<ISC31) | (0<<ISC30) | (0<<ISC21) | (0<<ISC20) | (1<<ISC11) | (0<<ISC11) | (0<<ISC01) | (0<<ISC00); // ì´ˆê¸°ê°’ = ë¼ì´ì§•ì—£ì§€
 
 	EIMSK = (0<<INT7) | (0<<INT6) | (0<<INT5) | (0<<INT4) | (0<<INT3) | (0<<INT2) | (1<<INT1) | (0<<INT0);
 
@@ -38,14 +38,14 @@ int main(){
 ISR(INT1_vect){ //ehco
    	cli();
 
-	if(EICRA == 0x0C){    // ¶óÀÌÂ¡¿§Áö¿¡¼­ ÀÎÅÍ·´Æ®°¡ °É¸®¸é
-        start = TCNT1; // TCNT1°ªÀ» ÀúÀåÇØµÎ°í
-        EICRA = 0x08;     // ´ÙÀ½¹ø ÀÎÅÍ·´Æ®´Â Æú¸µ¿§Áö·Î ¼³Á¤
+	if(EICRA == 0x0C){    // ë¼ì´ì§•ì—£ì§€ì—ì„œ ì¸í„°ëŸ½íŠ¸ê°€ ê±¸ë¦¬ë©´
+        start = TCNT1; // TCNT1ê°’ì„ ì €ì¥í•´ë‘ê³ 
+        EICRA = 0x08;     // ë‹¤ìŒë²ˆ ì¸í„°ëŸ½íŠ¸ëŠ” í´ë§ì—£ì§€ë¡œ ì„¤ì •
     }
 
-	else{            // Æú¸µ¿§Áö¿¡¼­ ÀÎÅÍ·´Æ®°¡ °É¸®¸é
-        end = TCNT1;   // TCNT1°ªÀ» ÀúÀåÇØµÎ°í
-        EICRA = 0x0C;     // ´ÙÀ½¹ø ÀÎÅÍ·´Æ®´Â ¶óÀÌÂ¡¿§Áö·Î ¼³Á¤
+	else{            // í´ë§ì—£ì§€ì—ì„œ ì¸í„°ëŸ½íŠ¸ê°€ ê±¸ë¦¬ë©´
+        end = TCNT1;   // TCNT1ê°’ì„ ì €ì¥í•´ë‘ê³ 
+        EICRA = 0x0C;     // ë‹¤ìŒë²ˆ ì¸í„°ëŸ½íŠ¸ëŠ” ë¼ì´ì§•ì—£ì§€ë¡œ ì„¤ì •
         dist= (unsigned int)((float)(end-start) / 14.5 ); // Sound_velocity -> 29us per 1cm -> [distance = duration / 29us / 2]
 
 		if(dist <= 1) { // Dist Price 0->10cm, 1->20cm....
@@ -63,7 +63,7 @@ ISR(INT1_vect){ //ehco
 
 
 
-ISR(TIMER1_OVF_vect){ // ÀÏÁ¤½Ã°£¸¶´Ù ÃÊÀ½ÆÄ¼¾¼­ Trig ¹ß»ı
+ISR(TIMER1_OVF_vect){ // ì¼ì •ì‹œê°„ë§ˆë‹¤ ì´ˆìŒíŒŒì„¼ì„œ Trig ë°œìƒ
    	cli();
 
    	TCNT1H = 0xE1;
