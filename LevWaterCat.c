@@ -1,81 +1,68 @@
 #include <avr/io.h>
-#include <avr/delay.h>
 #include <avr/interrupt.h>
+#include <avr/delay.h>
 
-volatile unsigned int start=0, end=0, dist=0;
-volatile unsigned int ABLE = 0;
+volatile unsigned char cnt = 0;
+volatile unsigned int flag = 0;
+volatile unsigned int ADC_Result;
+volatile unsigned char ADC_Low, ADC_High;
 
-int main(){
+//LED(v)
 
+int main(void) {
+	
 	cli();
 
-	DDRB = 0xFF; // Output
-	DDRF = 0xFF; // Trig
-	DDRD = 0x00; // Ehco
-	EICRA = (0<<ISC31) | (0<<ISC30) | (0<<ISC21) | (0<<ISC20) | (1<<ISC11) | (0<<ISC11) | (0<<ISC01) | (0<<ISC00); // 초기값 = 라이징엣지
+	DDRF = 0x00; //AD input
+	DDRB = 0xFF;
+	DDRD = 0xFF;	
 
-	EIMSK = (0<<INT7) | (0<<INT6) | (0<<INT5) | (0<<INT4) | (0<<INT3) | (0<<INT2) | (1<<INT1) | (0<<INT0);
-
-	TIMSK = 0x04;
-	TCCR1A = 0X00;
-	TCCR1B = 0X05;
-
-	TCNT1H = 0xFF;
-	TCNT1L = 0xFE;
+	TCCR0 = (0<<FOC0) | (1<<WGM00) | (1<<COM01) | (1<<COM00) | (0<<WGM01) | (0<<CS02) | (0<<CS01) | (1<<CS00 ); //PWM
 
 	sei();
 
-	do{
+	TIMSK = 0x04;
+	TCCR1A = 0x00; 
+	TCCR1B = 0x05; //clk select
 
+	TCNT1H = 0xFF; //초기에 overflow 발생시기 당김
+	TCNT1L = 0xC0;
 
-	}while(1);
+	ADMUX = 0x00;
+	ADCSRA = 0x83;
+	
+	do {
+		
+	} while (1);
 
-
-
+	return 0;
 }
 
+ISR(TIMER1_OVF_vect) { 
+	cli();
 
-ISR(INT1_vect){ //ehco
-   	cli();
+	TCNT1H = 0xFE; //0.02초 (20ms, 50Hz, duty cycle = 5%)
+	TCNT1L = 0xC6;
 
-	if(EICRA == 0x0C){    // 라이징엣지에서 인터럽트가 걸리면
-        start = TCNT1; // TCNT1값을 저장해두고
-        EICRA = 0x08;     // 다음번 인터럽트는 폴링엣지로 설정
-    }
+	ADCSRA |= 0x40; //ADC start, (1<<ADSC)
 
-	else{            // 폴링엣지에서 인터럽트가 걸리면
-        end = TCNT1;   // TCNT1값을 저장해두고
-        EICRA = 0x0C;     // 다음번 인터럽트는 라이징엣지로 설정
-        dist= (unsigned int)((float)(end-start) / 14.5 ); // Sound_velocity -> 29us per 1cm -> [distance = duration / 29us / 2]
+	while(ADCSRA&0x40); //Wait until ADCSRA & 0x40 != 0, (1<<ADSC)
 
-		if(dist <= 1) { // Dist Price 0->10cm, 1->20cm....
-			ABLE = 1;
-			PORTB = 0x10;
-		} 
-		else {
-			PORTB = 0x00;
-			ABLE = 0;
-		}
-    }
+	ADC_Low = ADCL;  //Low value First
+	ADC_High = ADCH;
+	ADC_Result = (ADC_Low + ADC_High * 256) / 30;
 
-   sei();
-}
+	flag++;
 
+	if(flag < ADC_Result) {
+		PORTD = 0x10;
+	} else {
+		PORTD = 0x00;
+		flag = 0;
+	}
 
+	OCR0 = 190; //Water Pump Power Control
 
-ISR(TIMER1_OVF_vect){ // 일정시간마다 초음파센서 Trig 발생
-   	cli();
-
-   	TCNT1H = 0xE1;
-   	TCNT1L = 0x7A;
-
-   	PORTF = 0xFF;
-	_delay_us(10);
-
-	PORTF = 0x00;
-
-   	sei();
-
-
+	sei();
 
 }

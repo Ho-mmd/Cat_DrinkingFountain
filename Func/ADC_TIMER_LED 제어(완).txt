@@ -45,7 +45,7 @@ ISR(TIMER1_OVF_vect) {
 
 	ADC_Low = ADCL;  //Low value First
 	ADC_High = ADCH;
-	ADC_Result = ADC_Low + ADC_High * 256;
+	ADC_Result = (ADC_Low + ADC_High * 256) / 30;
 
 	flag++;
 
