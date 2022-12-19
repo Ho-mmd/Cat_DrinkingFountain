@@ -56,6 +56,7 @@ ISR(INT1_vect){ //ehco
 			PORTB = 0x00;
 			ABLE = 0;
 		}
+		_delay_us(10);
     }
 
    sei();
@@ -66,8 +67,8 @@ ISR(INT1_vect){ //ehco
 ISR(TIMER1_OVF_vect){ // 일정시간마다 초음파센서 Trig 발생
    	cli();
 
-   	TCNT1H = 0xE1;
-   	TCNT1L = 0x7A;
+   	TCNT1H = 0xFF;
+   	TCNT1L = 0x62;
 
    	PORTF = 0xFF;
 	_delay_us(10);

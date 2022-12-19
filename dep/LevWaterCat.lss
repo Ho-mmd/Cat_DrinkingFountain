@@ -3,23 +3,27 @@ LevWaterCat.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000001fe  00000000  00000000  00000074  2**1
+  0 .data         00000002  00800100  00000688  0000071c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000688  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000007  00800100  00800100  00000272  2**0
+  2 .bss          00000004  00800102  00800102  0000071e  2**0
                   ALLOC
-  2 .debug_aranges 00000020  00000000  00000000  00000272  2**0
+  3 .debug_aranges 00000020  00000000  00000000  0000071e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_pubnames 00000064  00000000  00000000  00000292  2**0
+  4 .debug_pubnames 0000009b  00000000  00000000  0000073e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   000000ee  00000000  00000000  000002f6  2**0
+  5 .debug_info   00001032  00000000  00000000  000007d9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 0000007f  00000000  00000000  000003e4  2**0
+  6 .debug_abbrev 00000160  00000000  00000000  0000180b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   0000014a  00000000  00000000  00000463  2**0
+  7 .debug_line   000009c8  00000000  00000000  0000196b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  00000030  00000000  00000000  000005b0  2**2
+  8 .debug_frame  00000080  00000000  00000000  00002334  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    000000a8  00000000  00000000  000005e0  2**0
+  9 .debug_str    0000013b  00000000  00000000  000023b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000008d3  00000000  00000000  000024ef  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -39,7 +43,7 @@ Disassembly of section .text:
   2c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   30:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   34:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
-  38:	0c 94 7d 00 	jmp	0xfa	; 0xfa <__vector_14>
+  38:	0c 94 85 01 	jmp	0x30a	; 0x30a <__vector_14>
   3c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   40:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   44:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
@@ -55,7 +59,7 @@ Disassembly of section .text:
   6c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   70:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   74:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
-  78:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
+  78:	0c 94 ca 01 	jmp	0x394	; 0x394 <__vector_30>
   7c:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   80:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
   84:	0c 94 65 00 	jmp	0xca	; 0xca <__bad_interrupt>
@@ -73,20 +77,20 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	ee ef       	ldi	r30, 0xFE	; 254
-  a0:	f1 e0       	ldi	r31, 0x01	; 1
+  9e:	e8 e8       	ldi	r30, 0x88	; 136
+  a0:	f6 e0       	ldi	r31, 0x06	; 6
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
   a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
   a8:	07 90       	elpm	r0, Z+
   aa:	0d 92       	st	X+, r0
-  ac:	a0 30       	cpi	r26, 0x00	; 0
+  ac:	a2 30       	cpi	r26, 0x02	; 2
   ae:	b1 07       	cpc	r27, r17
   b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
 
 000000b2 <__do_clear_bss>:
   b2:	11 e0       	ldi	r17, 0x01	; 1
-  b4:	a0 e0       	ldi	r26, 0x00	; 0
+  b4:	a2 e0       	ldi	r26, 0x02	; 2
   b6:	b1 e0       	ldi	r27, 0x01	; 1
   b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
 
@@ -94,224 +98,1236 @@ Disassembly of section .text:
   ba:	1d 92       	st	X+, r1
 
 000000bc <.do_clear_bss_start>:
-  bc:	a7 30       	cpi	r26, 0x07	; 7
+  bc:	a6 30       	cpi	r26, 0x06	; 6
   be:	b1 07       	cpc	r27, r17
   c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
-  c2:	0e 94 67 00 	call	0xce	; 0xce <main>
-  c6:	0c 94 fd 00 	jmp	0x1fa	; 0x1fa <_exit>
+  c2:	0e 94 c5 00 	call	0x18a	; 0x18a <main>
+  c6:	0c 94 42 03 	jmp	0x684	; 0x684 <_exit>
 
 000000ca <__bad_interrupt>:
   ca:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000000ce <main>:
+000000ce <write_instruction>:
+volatile unsigned int measure, flag = 1, cnt = 0;
+void LED_CLK();
 
-//LED(v)
+void write_instruction(unsigned char data)
+{
+   RS_CLI
+  ce:	1a 98       	cbi	0x03, 2	; 3
+   RW_CLI
+  d0:	19 98       	cbi	0x03, 1	; 3
+   ENABLE
+  d2:	18 9a       	sbi	0x03, 0	; 3
+    can be achieved.
+*/
+void
+_delay_loop_1(uint8_t __count)
+{
+	__asm__ volatile (
+  d4:	95 e0       	ldi	r25, 0x05	; 5
+  d6:	29 2f       	mov	r18, r25
+  d8:	2a 95       	dec	r18
+  da:	f1 f7       	brne	.-4      	; 0xd8 <write_instruction+0xa>
+   _delay_us(1);
+   PORTB = data;
+  dc:	88 bb       	out	0x18, r24	; 24
+  de:	9a 95       	dec	r25
+  e0:	f1 f7       	brne	.-4      	; 0xde <write_instruction+0x10>
+   _delay_us(1);
+   DISABLE
+  e2:	18 98       	cbi	0x03, 0	; 3
+}
+  e4:	08 95       	ret
 
-int main(void) {
-	
-	cli();
-  ce:	f8 94       	cli
+000000e6 <write_data>:
 
-	DDRF = 0x00; //AD input
-  d0:	10 92 61 00 	sts	0x0061, r1
-	DDRB = 0xFF;
-  d4:	8f ef       	ldi	r24, 0xFF	; 255
-  d6:	87 bb       	out	0x17, r24	; 23
-	DDRD = 0xFF;	
-  d8:	81 bb       	out	0x11, r24	; 17
+void write_data(unsigned char data)
+{
+   RS_SET
+  e6:	1a 9a       	sbi	0x03, 2	; 3
+   RW_CLI
+  e8:	19 98       	cbi	0x03, 1	; 3
+   ENABLE
+  ea:	18 9a       	sbi	0x03, 0	; 3
+   PORTB = data;
+  ec:	88 bb       	out	0x18, r24	; 24
+  ee:	85 e0       	ldi	r24, 0x05	; 5
+  f0:	98 2f       	mov	r25, r24
+  f2:	9a 95       	dec	r25
+  f4:	f1 f7       	brne	.-4      	; 0xf2 <write_data+0xc>
+   _delay_us(1);
+   DISABLE
+  f6:	18 98       	cbi	0x03, 0	; 3
+  f8:	8a 95       	dec	r24
+  fa:	f1 f7       	brne	.-4      	; 0xf8 <write_data+0x12>
+   _delay_us(1);
+}
+  fc:	08 95       	ret
 
-	TCCR0 = (0<<FOC0) | (1<<WGM00) | (1<<COM01) | (1<<COM00) | (0<<WGM01) | (0<<CS02) | (0<<CS01) | (1<<CS00 ); //PWM
-  da:	81 e7       	ldi	r24, 0x71	; 113
-  dc:	83 bf       	out	0x33, r24	; 51
+000000fe <init_LCD>:
 
-	sei();
-  de:	78 94       	sei
+void init_LCD(void)
+{
+  fe:	0f 93       	push	r16
+ 100:	1f 93       	push	r17
+ 102:	8e ee       	ldi	r24, 0xEE	; 238
+ 104:	92 e0       	ldi	r25, 0x02	; 2
+    milliseconds can be achieved.
+ */
+void
+_delay_loop_2(uint16_t __count)
+{
+	__asm__ volatile (
+ 106:	20 e9       	ldi	r18, 0x90	; 144
+ 108:	31 e0       	ldi	r19, 0x01	; 1
+ 10a:	f9 01       	movw	r30, r18
+ 10c:	31 97       	sbiw	r30, 0x01	; 1
+ 10e:	f1 f7       	brne	.-4      	; 0x10c <init_LCD+0xe>
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 110:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 112:	d9 f7       	brne	.-10     	; 0x10a <init_LCD+0xc>
+   _delay_ms(75);
+   write_instruction(0x30);
+ 114:	80 e3       	ldi	r24, 0x30	; 48
+ 116:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 11a:	8a ef       	ldi	r24, 0xFA	; 250
+ 11c:	90 e0       	ldi	r25, 0x00	; 0
+ 11e:	20 e9       	ldi	r18, 0x90	; 144
+ 120:	31 e0       	ldi	r19, 0x01	; 1
+ 122:	f9 01       	movw	r30, r18
+ 124:	31 97       	sbiw	r30, 0x01	; 1
+ 126:	f1 f7       	brne	.-4      	; 0x124 <init_LCD+0x26>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 128:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 12a:	d9 f7       	brne	.-10     	; 0x122 <init_LCD+0x24>
+   _delay_ms(25);
+   write_instruction(0x30);
+ 12c:	80 e3       	ldi	r24, 0x30	; 48
+ 12e:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 132:	00 e2       	ldi	r16, 0x20	; 32
+ 134:	1e e4       	ldi	r17, 0x4E	; 78
+ 136:	c8 01       	movw	r24, r16
+ 138:	01 97       	sbiw	r24, 0x01	; 1
+ 13a:	f1 f7       	brne	.-4      	; 0x138 <init_LCD+0x3a>
+   _delay_ms(5);
+   write_instruction(0x30);
+ 13c:	80 e3       	ldi	r24, 0x30	; 48
+ 13e:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 142:	c8 01       	movw	r24, r16
+ 144:	01 97       	sbiw	r24, 0x01	; 1
+ 146:	f1 f7       	brne	.-4      	; 0x144 <init_LCD+0x46>
+   _delay_ms(5);
+   write_instruction(0x38);
+ 148:	88 e3       	ldi	r24, 0x38	; 56
+ 14a:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 14e:	c8 01       	movw	r24, r16
+ 150:	01 97       	sbiw	r24, 0x01	; 1
+ 152:	f1 f7       	brne	.-4      	; 0x150 <init_LCD+0x52>
+   _delay_ms(5);
+   write_instruction(0x08);
+ 154:	88 e0       	ldi	r24, 0x08	; 8
+ 156:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 15a:	c8 01       	movw	r24, r16
+ 15c:	01 97       	sbiw	r24, 0x01	; 1
+ 15e:	f1 f7       	brne	.-4      	; 0x15c <init_LCD+0x5e>
+   _delay_ms(5);
+   write_instruction(0x01);
+ 160:	81 e0       	ldi	r24, 0x01	; 1
+ 162:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 166:	c8 01       	movw	r24, r16
+ 168:	01 97       	sbiw	r24, 0x01	; 1
+ 16a:	f1 f7       	brne	.-4      	; 0x168 <init_LCD+0x6a>
+   _delay_ms(5);
+   write_instruction(0x04);
+ 16c:	84 e0       	ldi	r24, 0x04	; 4
+ 16e:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 172:	c8 01       	movw	r24, r16
+ 174:	01 97       	sbiw	r24, 0x01	; 1
+ 176:	f1 f7       	brne	.-4      	; 0x174 <init_LCD+0x76>
+   _delay_ms(5);
+   write_instruction(0x0c);
+ 178:	8c e0       	ldi	r24, 0x0C	; 12
+ 17a:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 17e:	c8 01       	movw	r24, r16
+ 180:	01 97       	sbiw	r24, 0x01	; 1
+ 182:	f1 f7       	brne	.-4      	; 0x180 <init_LCD+0x82>
+   _delay_ms(5);
+}
+ 184:	1f 91       	pop	r17
+ 186:	0f 91       	pop	r16
+ 188:	08 95       	ret
 
-	TIMSK = 0x04;
-  e0:	84 e0       	ldi	r24, 0x04	; 4
-  e2:	87 bf       	out	0x37, r24	; 55
+0000018a <main>:
+
+int main(void)
+{
+   cli();
+ 18a:	f8 94       	cli
+   
+   DDRD = 0x08; //PD3 출력
+ 18c:	88 e0       	ldi	r24, 0x08	; 8
+ 18e:	81 bb       	out	0x11, r24	; 17
+   DDRE = 0x07; //PE0,1,2 출력
+ 190:	97 e0       	ldi	r25, 0x07	; 7
+ 192:	92 b9       	out	0x02, r25	; 2
+   DDRB = 0xFF; //PB 전체 출력
+ 194:	8f ef       	ldi	r24, 0xFF	; 255
+ 196:	87 bb       	out	0x17, r24	; 23
+   DDRF = 0xFF;
+ 198:	80 93 61 00 	sts	0x0061, r24
+
+   UCSR1C = 0x07;
+ 19c:	90 93 9d 00 	sts	0x009D, r25
+   UCSR1B = 0x98;
+ 1a0:	88 e9       	ldi	r24, 0x98	; 152
+ 1a2:	80 93 9a 00 	sts	0x009A, r24
+
+   UBRR1H = 0x00;
+ 1a6:	10 92 98 00 	sts	0x0098, r1
+   UBRR1L = 0x2F;   
+ 1aa:	8f e2       	ldi	r24, 0x2F	; 47
+ 1ac:	80 93 99 00 	sts	0x0099, r24
+ 1b0:	88 ee       	ldi	r24, 0xE8	; 232
+ 1b2:	93 e0       	ldi	r25, 0x03	; 3
+ 1b4:	20 e9       	ldi	r18, 0x90	; 144
+ 1b6:	31 e0       	ldi	r19, 0x01	; 1
+ 1b8:	f9 01       	movw	r30, r18
+ 1ba:	31 97       	sbiw	r30, 0x01	; 1
+ 1bc:	f1 f7       	brne	.-4      	; 0x1ba <main+0x30>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1be:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1c0:	d9 f7       	brne	.-10     	; 0x1b8 <main+0x2e>
+
+   _delay_ms(100);
+   init_LCD();   
+ 1c2:	0e 94 7f 00 	call	0xfe	; 0xfe <init_LCD>
+   
+   write_instruction(0x8B); _delay_ms(10);
+ 1c6:	8b e8       	ldi	r24, 0x8B	; 139
+ 1c8:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 1cc:	80 e4       	ldi	r24, 0x40	; 64
+ 1ce:	9c e9       	ldi	r25, 0x9C	; 156
+ 1d0:	01 97       	sbiw	r24, 0x01	; 1
+ 1d2:	f1 f7       	brne	.-4      	; 0x1d0 <main+0x46>
+   write_data(':'); _delay_ms(100);
+ 1d4:	8a e3       	ldi	r24, 0x3A	; 58
+ 1d6:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 1da:	88 ee       	ldi	r24, 0xE8	; 232
+ 1dc:	93 e0       	ldi	r25, 0x03	; 3
+ 1de:	20 e9       	ldi	r18, 0x90	; 144
+ 1e0:	31 e0       	ldi	r19, 0x01	; 1
+ 1e2:	f9 01       	movw	r30, r18
+ 1e4:	31 97       	sbiw	r30, 0x01	; 1
+ 1e6:	f1 f7       	brne	.-4      	; 0x1e4 <main+0x5a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 1e8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 1ea:	d9 f7       	brne	.-10     	; 0x1e2 <main+0x58>
+   write_data('L'); _delay_ms(100);
+ 1ec:	8c e4       	ldi	r24, 0x4C	; 76
+ 1ee:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 1f2:	88 ee       	ldi	r24, 0xE8	; 232
+ 1f4:	93 e0       	ldi	r25, 0x03	; 3
+ 1f6:	20 e9       	ldi	r18, 0x90	; 144
+ 1f8:	31 e0       	ldi	r19, 0x01	; 1
+ 1fa:	f9 01       	movw	r30, r18
+ 1fc:	31 97       	sbiw	r30, 0x01	; 1
+ 1fe:	f1 f7       	brne	.-4      	; 0x1fc <main+0x72>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 200:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 202:	d9 f7       	brne	.-10     	; 0x1fa <main+0x70>
+   write_data('E'); _delay_ms(100);
+ 204:	85 e4       	ldi	r24, 0x45	; 69
+ 206:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 20a:	88 ee       	ldi	r24, 0xE8	; 232
+ 20c:	93 e0       	ldi	r25, 0x03	; 3
+ 20e:	20 e9       	ldi	r18, 0x90	; 144
+ 210:	31 e0       	ldi	r19, 0x01	; 1
+ 212:	f9 01       	movw	r30, r18
+ 214:	31 97       	sbiw	r30, 0x01	; 1
+ 216:	f1 f7       	brne	.-4      	; 0x214 <main+0x8a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 218:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 21a:	d9 f7       	brne	.-10     	; 0x212 <main+0x88>
+   write_data('V'); _delay_ms(100);
+ 21c:	86 e5       	ldi	r24, 0x56	; 86
+ 21e:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 222:	88 ee       	ldi	r24, 0xE8	; 232
+ 224:	93 e0       	ldi	r25, 0x03	; 3
+ 226:	20 e9       	ldi	r18, 0x90	; 144
+ 228:	31 e0       	ldi	r19, 0x01	; 1
+ 22a:	f9 01       	movw	r30, r18
+ 22c:	31 97       	sbiw	r30, 0x01	; 1
+ 22e:	f1 f7       	brne	.-4      	; 0x22c <main+0xa2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 230:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 232:	d9 f7       	brne	.-10     	; 0x22a <main+0xa0>
+   write_data('E'); _delay_ms(100);
+ 234:	85 e4       	ldi	r24, 0x45	; 69
+ 236:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 23a:	88 ee       	ldi	r24, 0xE8	; 232
+ 23c:	93 e0       	ldi	r25, 0x03	; 3
+ 23e:	20 e9       	ldi	r18, 0x90	; 144
+ 240:	31 e0       	ldi	r19, 0x01	; 1
+ 242:	f9 01       	movw	r30, r18
+ 244:	31 97       	sbiw	r30, 0x01	; 1
+ 246:	f1 f7       	brne	.-4      	; 0x244 <main+0xba>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 248:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 24a:	d9 f7       	brne	.-10     	; 0x242 <main+0xb8>
+   write_data('L'); _delay_ms(100);
+ 24c:	8c e4       	ldi	r24, 0x4C	; 76
+ 24e:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 252:	88 ee       	ldi	r24, 0xE8	; 232
+ 254:	93 e0       	ldi	r25, 0x03	; 3
+ 256:	20 e9       	ldi	r18, 0x90	; 144
+ 258:	31 e0       	ldi	r19, 0x01	; 1
+ 25a:	f9 01       	movw	r30, r18
+ 25c:	31 97       	sbiw	r30, 0x01	; 1
+ 25e:	f1 f7       	brne	.-4      	; 0x25c <main+0xd2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 260:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 262:	d9 f7       	brne	.-10     	; 0x25a <main+0xd0>
+   write_data(' '); _delay_ms(100);
+ 264:	80 e2       	ldi	r24, 0x20	; 32
+ 266:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 26a:	88 ee       	ldi	r24, 0xE8	; 232
+ 26c:	93 e0       	ldi	r25, 0x03	; 3
+ 26e:	20 e9       	ldi	r18, 0x90	; 144
+ 270:	31 e0       	ldi	r19, 0x01	; 1
+ 272:	f9 01       	movw	r30, r18
+ 274:	31 97       	sbiw	r30, 0x01	; 1
+ 276:	f1 f7       	brne	.-4      	; 0x274 <main+0xea>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 278:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 27a:	d9 f7       	brne	.-10     	; 0x272 <main+0xe8>
+   write_data('R'); _delay_ms(100);
+ 27c:	82 e5       	ldi	r24, 0x52	; 82
+ 27e:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 282:	88 ee       	ldi	r24, 0xE8	; 232
+ 284:	93 e0       	ldi	r25, 0x03	; 3
+ 286:	20 e9       	ldi	r18, 0x90	; 144
+ 288:	31 e0       	ldi	r19, 0x01	; 1
+ 28a:	f9 01       	movw	r30, r18
+ 28c:	31 97       	sbiw	r30, 0x01	; 1
+ 28e:	f1 f7       	brne	.-4      	; 0x28c <main+0x102>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 290:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 292:	d9 f7       	brne	.-10     	; 0x28a <main+0x100>
+   write_data('E'); _delay_ms(100);
+ 294:	85 e4       	ldi	r24, 0x45	; 69
+ 296:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 29a:	88 ee       	ldi	r24, 0xE8	; 232
+ 29c:	93 e0       	ldi	r25, 0x03	; 3
+ 29e:	20 e9       	ldi	r18, 0x90	; 144
+ 2a0:	31 e0       	ldi	r19, 0x01	; 1
+ 2a2:	f9 01       	movw	r30, r18
+ 2a4:	31 97       	sbiw	r30, 0x01	; 1
+ 2a6:	f1 f7       	brne	.-4      	; 0x2a4 <main+0x11a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2a8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2aa:	d9 f7       	brne	.-10     	; 0x2a2 <main+0x118>
+   write_data('T'); _delay_ms(100);
+ 2ac:	84 e5       	ldi	r24, 0x54	; 84
+ 2ae:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 2b2:	88 ee       	ldi	r24, 0xE8	; 232
+ 2b4:	93 e0       	ldi	r25, 0x03	; 3
+ 2b6:	20 e9       	ldi	r18, 0x90	; 144
+ 2b8:	31 e0       	ldi	r19, 0x01	; 1
+ 2ba:	f9 01       	movw	r30, r18
+ 2bc:	31 97       	sbiw	r30, 0x01	; 1
+ 2be:	f1 f7       	brne	.-4      	; 0x2bc <main+0x132>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2c0:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2c2:	d9 f7       	brne	.-10     	; 0x2ba <main+0x130>
+   write_data('A'); _delay_ms(100);
+ 2c4:	81 e4       	ldi	r24, 0x41	; 65
+ 2c6:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 2ca:	88 ee       	ldi	r24, 0xE8	; 232
+ 2cc:	93 e0       	ldi	r25, 0x03	; 3
+ 2ce:	20 e9       	ldi	r18, 0x90	; 144
+ 2d0:	31 e0       	ldi	r19, 0x01	; 1
+ 2d2:	f9 01       	movw	r30, r18
+ 2d4:	31 97       	sbiw	r30, 0x01	; 1
+ 2d6:	f1 f7       	brne	.-4      	; 0x2d4 <main+0x14a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2d8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2da:	d9 f7       	brne	.-10     	; 0x2d2 <main+0x148>
+   write_data('W'); _delay_ms(100);
+ 2dc:	87 e5       	ldi	r24, 0x57	; 87
+ 2de:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 2e2:	88 ee       	ldi	r24, 0xE8	; 232
+ 2e4:	93 e0       	ldi	r25, 0x03	; 3
+ 2e6:	20 e9       	ldi	r18, 0x90	; 144
+ 2e8:	31 e0       	ldi	r19, 0x01	; 1
+ 2ea:	f9 01       	movw	r30, r18
+ 2ec:	31 97       	sbiw	r30, 0x01	; 1
+ 2ee:	f1 f7       	brne	.-4      	; 0x2ec <main+0x162>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 2f0:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 2f2:	d9 f7       	brne	.-10     	; 0x2ea <main+0x160>
+
+   	TIMSK = 0x04;
+ 2f4:	84 e0       	ldi	r24, 0x04	; 4
+ 2f6:	87 bf       	out	0x37, r24	; 55
 	TCCR1A = 0x00; 
-  e4:	1f bc       	out	0x2f, r1	; 47
+ 2f8:	1f bc       	out	0x2f, r1	; 47
 	TCCR1B = 0x05; //clk select
-  e6:	85 e0       	ldi	r24, 0x05	; 5
-  e8:	8e bd       	out	0x2e, r24	; 46
+ 2fa:	85 e0       	ldi	r24, 0x05	; 5
+ 2fc:	8e bd       	out	0x2e, r24	; 46
 
 	TCNT1H = 0xFF; //초기에 overflow 발생시기 당김
-  ea:	8f ef       	ldi	r24, 0xFF	; 255
-  ec:	8d bd       	out	0x2d, r24	; 45
+ 2fe:	8f ef       	ldi	r24, 0xFF	; 255
+ 300:	8d bd       	out	0x2d, r24	; 45
 	TCNT1L = 0xC0;
-  ee:	80 ec       	ldi	r24, 0xC0	; 192
-  f0:	8c bd       	out	0x2c, r24	; 44
+ 302:	80 ec       	ldi	r24, 0xC0	; 192
+ 304:	8c bd       	out	0x2c, r24	; 44
 
-	ADMUX = 0x00;
-  f2:	17 b8       	out	0x07, r1	; 7
-	ADCSRA = 0x83;
-  f4:	83 e8       	ldi	r24, 0x83	; 131
-  f6:	86 b9       	out	0x06, r24	; 6
-  f8:	ff cf       	rjmp	.-2      	; 0xf8 <main+0x2a>
+   sei();
+ 306:	78 94       	sei
+ 308:	ff cf       	rjmp	.-2      	; 0x308 <main+0x17e>
 
-000000fa <__vector_14>:
-	} while (1);
+0000030a <__vector_14>:
 
-	return 0;
+   sei();
 }
+
 
 ISR(TIMER1_OVF_vect) { 
-  fa:	1f 92       	push	r1
-  fc:	0f 92       	push	r0
-  fe:	0f b6       	in	r0, 0x3f	; 63
- 100:	0f 92       	push	r0
- 102:	11 24       	eor	r1, r1
- 104:	2f 93       	push	r18
- 106:	3f 93       	push	r19
- 108:	5f 93       	push	r21
- 10a:	6f 93       	push	r22
- 10c:	7f 93       	push	r23
- 10e:	8f 93       	push	r24
- 110:	9f 93       	push	r25
- 112:	af 93       	push	r26
- 114:	bf 93       	push	r27
+ 30a:	1f 92       	push	r1
+ 30c:	0f 92       	push	r0
+ 30e:	0f b6       	in	r0, 0x3f	; 63
+ 310:	0f 92       	push	r0
+ 312:	11 24       	eor	r1, r1
+ 314:	2f 93       	push	r18
+ 316:	8f 93       	push	r24
+ 318:	9f 93       	push	r25
 	cli();
- 116:	f8 94       	cli
+ 31a:	f8 94       	cli
 
-	TCNT1H = 0xFE; //0.02초 (20ms, 50Hz, duty cycle = 5%)
- 118:	8e ef       	ldi	r24, 0xFE	; 254
- 11a:	8d bd       	out	0x2d, r24	; 45
-	TCNT1L = 0xC6;
- 11c:	86 ec       	ldi	r24, 0xC6	; 198
- 11e:	8c bd       	out	0x2c, r24	; 44
+	TCNT1H = 0xFF; //0.004초
+ 31c:	2f ef       	ldi	r18, 0xFF	; 255
+ 31e:	2d bd       	out	0x2d, r18	; 45
+	TCNT1L = 0x62;
+ 320:	82 e6       	ldi	r24, 0x62	; 98
+ 322:	8c bd       	out	0x2c, r24	; 44
 
-	ADCSRA |= 0x40; //ADC start, (1<<ADSC)
- 120:	36 9a       	sbi	0x06, 6	; 6
-
-	while(ADCSRA&0x40); //Wait until ADCSRA & 0x40 != 0, (1<<ADSC)
- 122:	36 99       	sbic	0x06, 6	; 6
- 124:	fe cf       	rjmp	.-4      	; 0x122 <__vector_14+0x28>
-
-	ADC_Low = ADCL;  //Low value First
- 126:	84 b1       	in	r24, 0x04	; 4
- 128:	80 93 04 01 	sts	0x0104, r24
-	ADC_High = ADCH;
- 12c:	85 b1       	in	r24, 0x05	; 5
- 12e:	80 93 03 01 	sts	0x0103, r24
-	ADC_Result = (ADC_Low + ADC_High * 256) / 30;
- 132:	30 91 04 01 	lds	r19, 0x0104
- 136:	20 91 03 01 	lds	r18, 0x0103
- 13a:	92 2f       	mov	r25, r18
- 13c:	80 e0       	ldi	r24, 0x00	; 0
- 13e:	83 0f       	add	r24, r19
- 140:	91 1d       	adc	r25, r1
- 142:	6e e1       	ldi	r22, 0x1E	; 30
- 144:	70 e0       	ldi	r23, 0x00	; 0
- 146:	0e 94 d6 00 	call	0x1ac	; 0x1ac <__divmodhi4>
- 14a:	70 93 06 01 	sts	0x0106, r23
- 14e:	60 93 05 01 	sts	0x0105, r22
-
-	flag++;
- 152:	80 91 01 01 	lds	r24, 0x0101
- 156:	90 91 02 01 	lds	r25, 0x0102
- 15a:	01 96       	adiw	r24, 0x01	; 1
- 15c:	90 93 02 01 	sts	0x0102, r25
- 160:	80 93 01 01 	sts	0x0101, r24
-
-	if(flag < ADC_Result) {
- 164:	20 91 01 01 	lds	r18, 0x0101
- 168:	30 91 02 01 	lds	r19, 0x0102
- 16c:	80 91 05 01 	lds	r24, 0x0105
- 170:	90 91 06 01 	lds	r25, 0x0106
- 174:	28 17       	cp	r18, r24
- 176:	39 07       	cpc	r19, r25
- 178:	18 f4       	brcc	.+6      	; 0x180 <__vector_14+0x86>
-		PORTD = 0x10;
- 17a:	80 e1       	ldi	r24, 0x10	; 16
- 17c:	82 bb       	out	0x12, r24	; 18
- 17e:	05 c0       	rjmp	.+10     	; 0x18a <__vector_14+0x90>
-	} else {
-		PORTD = 0x00;
- 180:	12 ba       	out	0x12, r1	; 18
-		flag = 0;
- 182:	10 92 02 01 	sts	0x0102, r1
- 186:	10 92 01 01 	sts	0x0101, r1
+	if(measure == 0) {
+ 324:	80 91 04 01 	lds	r24, 0x0104
+ 328:	90 91 05 01 	lds	r25, 0x0105
+ 32c:	89 2b       	or	r24, r25
+ 32e:	a9 f4       	brne	.+42     	; 0x35a <__vector_14+0x50>
+		if(flag) {
+ 330:	80 91 00 01 	lds	r24, 0x0100
+ 334:	90 91 01 01 	lds	r25, 0x0101
+ 338:	89 2b       	or	r24, r25
+ 33a:	39 f0       	breq	.+14     	; 0x34a <__vector_14+0x40>
+			PORTF = 0xFF;
+ 33c:	20 93 62 00 	sts	0x0062, r18
+			flag = 0;
+ 340:	10 92 01 01 	sts	0x0101, r1
+ 344:	10 92 00 01 	sts	0x0100, r1
+ 348:	08 c0       	rjmp	.+16     	; 0x35a <__vector_14+0x50>
+		} else {		
+			PORTF = 0x00;
+ 34a:	10 92 62 00 	sts	0x0062, r1
+			flag = 1;
+ 34e:	81 e0       	ldi	r24, 0x01	; 1
+ 350:	90 e0       	ldi	r25, 0x00	; 0
+ 352:	90 93 01 01 	sts	0x0101, r25
+ 356:	80 93 00 01 	sts	0x0100, r24
+		}
 	}
-
-	OCR0 = 190; //Water Pump Power Control
- 18a:	8e eb       	ldi	r24, 0xBE	; 190
- 18c:	81 bf       	out	0x31, r24	; 49
-
+	
+		
 	sei();
- 18e:	78 94       	sei
+ 35a:	78 94       	sei
 
 }
- 190:	bf 91       	pop	r27
- 192:	af 91       	pop	r26
- 194:	9f 91       	pop	r25
- 196:	8f 91       	pop	r24
- 198:	7f 91       	pop	r23
- 19a:	6f 91       	pop	r22
- 19c:	5f 91       	pop	r21
- 19e:	3f 91       	pop	r19
- 1a0:	2f 91       	pop	r18
- 1a2:	0f 90       	pop	r0
- 1a4:	0f be       	out	0x3f, r0	; 63
- 1a6:	0f 90       	pop	r0
- 1a8:	1f 90       	pop	r1
- 1aa:	18 95       	reti
+ 35c:	9f 91       	pop	r25
+ 35e:	8f 91       	pop	r24
+ 360:	2f 91       	pop	r18
+ 362:	0f 90       	pop	r0
+ 364:	0f be       	out	0x3f, r0	; 63
+ 366:	0f 90       	pop	r0
+ 368:	1f 90       	pop	r1
+ 36a:	18 95       	reti
 
-000001ac <__divmodhi4>:
- 1ac:	97 fb       	bst	r25, 7
- 1ae:	09 2e       	mov	r0, r25
- 1b0:	07 26       	eor	r0, r23
- 1b2:	0a d0       	rcall	.+20     	; 0x1c8 <__divmodhi4_neg1>
- 1b4:	77 fd       	sbrc	r23, 7
- 1b6:	04 d0       	rcall	.+8      	; 0x1c0 <__divmodhi4_neg2>
- 1b8:	0c d0       	rcall	.+24     	; 0x1d2 <__udivmodhi4>
- 1ba:	06 d0       	rcall	.+12     	; 0x1c8 <__divmodhi4_neg1>
- 1bc:	00 20       	and	r0, r0
- 1be:	1a f4       	brpl	.+6      	; 0x1c6 <__divmodhi4_exit>
+0000036c <LED_WaterLev>:
 
-000001c0 <__divmodhi4_neg2>:
- 1c0:	70 95       	com	r23
- 1c2:	61 95       	neg	r22
- 1c4:	7f 4f       	sbci	r23, 0xFF	; 255
+void LED_WaterLev(unsigned int a) {
+ 36c:	9c 01       	movw	r18, r24
+	if(0 < a && a <= 2)
+ 36e:	01 97       	sbiw	r24, 0x01	; 1
+ 370:	02 97       	sbiw	r24, 0x02	; 2
+ 372:	10 f4       	brcc	.+4      	; 0x378 <LED_WaterLev+0xc>
+		PORTF = 0x01;
+ 374:	81 e0       	ldi	r24, 0x01	; 1
+ 376:	0b c0       	rjmp	.+22     	; 0x38e <LED_WaterLev+0x22>
+	else if(a <= 4)
+ 378:	25 30       	cpi	r18, 0x05	; 5
+ 37a:	31 05       	cpc	r19, r1
+ 37c:	10 f4       	brcc	.+4      	; 0x382 <LED_WaterLev+0x16>
+		PORTF = 0x03;
+ 37e:	83 e0       	ldi	r24, 0x03	; 3
+ 380:	06 c0       	rjmp	.+12     	; 0x38e <LED_WaterLev+0x22>
+	else if(a <= 6)
+ 382:	27 30       	cpi	r18, 0x07	; 7
+ 384:	31 05       	cpc	r19, r1
+ 386:	10 f4       	brcc	.+4      	; 0x38c <LED_WaterLev+0x20>
+		PORTF = 0x07;
+ 388:	87 e0       	ldi	r24, 0x07	; 7
+ 38a:	01 c0       	rjmp	.+2      	; 0x38e <LED_WaterLev+0x22>
+	else if(a > 6)
+		PORTF = 0x0F;
+ 38c:	8f e0       	ldi	r24, 0x0F	; 15
+ 38e:	80 93 62 00 	sts	0x0062, r24
+ 392:	08 95       	ret
 
-000001c6 <__divmodhi4_exit>:
- 1c6:	08 95       	ret
+00000394 <__vector_30>:
 
-000001c8 <__divmodhi4_neg1>:
- 1c8:	f6 f7       	brtc	.-4      	; 0x1c6 <__divmodhi4_exit>
- 1ca:	90 95       	com	r25
- 1cc:	81 95       	neg	r24
- 1ce:	9f 4f       	sbci	r25, 0xFF	; 255
- 1d0:	08 95       	ret
+   }while(1);
+}
 
-000001d2 <__udivmodhi4>:
- 1d2:	aa 1b       	sub	r26, r26
- 1d4:	bb 1b       	sub	r27, r27
- 1d6:	51 e1       	ldi	r21, 0x11	; 17
- 1d8:	07 c0       	rjmp	.+14     	; 0x1e8 <__udivmodhi4_ep>
+ISR(USART1_RX_vect)
+{
+ 394:	1f 92       	push	r1
+ 396:	0f 92       	push	r0
+ 398:	0f b6       	in	r0, 0x3f	; 63
+ 39a:	0f 92       	push	r0
+ 39c:	0b b6       	in	r0, 0x3b	; 59
+ 39e:	0f 92       	push	r0
+ 3a0:	11 24       	eor	r1, r1
+ 3a2:	2f 93       	push	r18
+ 3a4:	3f 93       	push	r19
+ 3a6:	4f 93       	push	r20
+ 3a8:	5f 93       	push	r21
+ 3aa:	6f 93       	push	r22
+ 3ac:	7f 93       	push	r23
+ 3ae:	8f 93       	push	r24
+ 3b0:	9f 93       	push	r25
+ 3b2:	af 93       	push	r26
+ 3b4:	bf 93       	push	r27
+ 3b6:	ef 93       	push	r30
+ 3b8:	ff 93       	push	r31
+   cli();
+ 3ba:	f8 94       	cli
+   measure = UDR1;
+ 3bc:	80 91 9c 00 	lds	r24, 0x009C
+ 3c0:	90 e0       	ldi	r25, 0x00	; 0
+ 3c2:	90 93 05 01 	sts	0x0105, r25
+ 3c6:	80 93 04 01 	sts	0x0104, r24
+ 3ca:	88 ee       	ldi	r24, 0xE8	; 232
+ 3cc:	93 e0       	ldi	r25, 0x03	; 3
+ 3ce:	20 e9       	ldi	r18, 0x90	; 144
+ 3d0:	31 e0       	ldi	r19, 0x01	; 1
+ 3d2:	f9 01       	movw	r30, r18
+ 3d4:	31 97       	sbiw	r30, 0x01	; 1
+ 3d6:	f1 f7       	brne	.-4      	; 0x3d4 <__vector_30+0x40>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 3d8:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 3da:	d9 f7       	brne	.-10     	; 0x3d2 <__vector_30+0x3e>
 
-000001da <__udivmodhi4_loop>:
- 1da:	aa 1f       	adc	r26, r26
- 1dc:	bb 1f       	adc	r27, r27
- 1de:	a6 17       	cp	r26, r22
- 1e0:	b7 07       	cpc	r27, r23
- 1e2:	10 f0       	brcs	.+4      	; 0x1e8 <__udivmodhi4_ep>
- 1e4:	a6 1b       	sub	r26, r22
- 1e6:	b7 0b       	sbc	r27, r23
+   _delay_ms(100);
+ 
+   if(measure == 0){
+ 3dc:	80 91 04 01 	lds	r24, 0x0104
+ 3e0:	90 91 05 01 	lds	r25, 0x0105
+ 3e4:	89 2b       	or	r24, r25
+ 3e6:	09 f0       	breq	.+2      	; 0x3ea <__vector_30+0x56>
+ 3e8:	38 c0       	rjmp	.+112    	; 0x45a <__vector_30+0xc6>
+	   write_instruction(0xCF); _delay_ms(10);
+ 3ea:	8f ec       	ldi	r24, 0xCF	; 207
+ 3ec:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 3f0:	80 e4       	ldi	r24, 0x40	; 64
+ 3f2:	9c e9       	ldi	r25, 0x9C	; 156
+ 3f4:	01 97       	sbiw	r24, 0x01	; 1
+ 3f6:	f1 f7       	brne	.-4      	; 0x3f4 <__vector_30+0x60>
+	   write_data('%'); _delay_ms(100);
+ 3f8:	85 e2       	ldi	r24, 0x25	; 37
+ 3fa:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 3fe:	88 ee       	ldi	r24, 0xE8	; 232
+ 400:	93 e0       	ldi	r25, 0x03	; 3
+ 402:	20 e9       	ldi	r18, 0x90	; 144
+ 404:	31 e0       	ldi	r19, 0x01	; 1
+ 406:	f9 01       	movw	r30, r18
+ 408:	31 97       	sbiw	r30, 0x01	; 1
+ 40a:	f1 f7       	brne	.-4      	; 0x408 <__vector_30+0x74>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 40c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 40e:	d9 f7       	brne	.-10     	; 0x406 <__vector_30+0x72>
+	   write_data('0'); _delay_ms(100);
+ 410:	80 e3       	ldi	r24, 0x30	; 48
+ 412:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 416:	88 ee       	ldi	r24, 0xE8	; 232
+ 418:	93 e0       	ldi	r25, 0x03	; 3
+ 41a:	20 e9       	ldi	r18, 0x90	; 144
+ 41c:	31 e0       	ldi	r19, 0x01	; 1
+ 41e:	f9 01       	movw	r30, r18
+ 420:	31 97       	sbiw	r30, 0x01	; 1
+ 422:	f1 f7       	brne	.-4      	; 0x420 <__vector_30+0x8c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 424:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 426:	d9 f7       	brne	.-10     	; 0x41e <__vector_30+0x8a>
+	   write_data(' '); _delay_ms(100);
+ 428:	80 e2       	ldi	r24, 0x20	; 32
+ 42a:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 42e:	88 ee       	ldi	r24, 0xE8	; 232
+ 430:	93 e0       	ldi	r25, 0x03	; 3
+ 432:	20 e9       	ldi	r18, 0x90	; 144
+ 434:	31 e0       	ldi	r19, 0x01	; 1
+ 436:	f9 01       	movw	r30, r18
+ 438:	31 97       	sbiw	r30, 0x01	; 1
+ 43a:	f1 f7       	brne	.-4      	; 0x438 <__vector_30+0xa4>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 43c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 43e:	d9 f7       	brne	.-10     	; 0x436 <__vector_30+0xa2>
+	   write_data(' '); _delay_ms(100);
+ 440:	80 e2       	ldi	r24, 0x20	; 32
+ 442:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 446:	88 ee       	ldi	r24, 0xE8	; 232
+ 448:	93 e0       	ldi	r25, 0x03	; 3
+ 44a:	20 e9       	ldi	r18, 0x90	; 144
+ 44c:	31 e0       	ldi	r19, 0x01	; 1
+ 44e:	f9 01       	movw	r30, r18
+ 450:	31 97       	sbiw	r30, 0x01	; 1
+ 452:	f1 f7       	brne	.-4      	; 0x450 <__vector_30+0xbc>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 454:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 456:	d9 f7       	brne	.-10     	; 0x44e <__vector_30+0xba>
+ 458:	fb c0       	rjmp	.+502    	; 0x650 <__vector_30+0x2bc>
+	   _delay_ms(100);
+	   PORTF = 0x00;
+	   _delay_ms(100);*/
+   }
 
-000001e8 <__udivmodhi4_ep>:
- 1e8:	88 1f       	adc	r24, r24
- 1ea:	99 1f       	adc	r25, r25
- 1ec:	5a 95       	dec	r21
- 1ee:	a9 f7       	brne	.-22     	; 0x1da <__udivmodhi4_loop>
- 1f0:	80 95       	com	r24
- 1f2:	90 95       	com	r25
- 1f4:	bc 01       	movw	r22, r24
- 1f6:	cd 01       	movw	r24, r26
- 1f8:	08 95       	ret
+   else if(measure <= 2){
+ 45a:	80 91 04 01 	lds	r24, 0x0104
+ 45e:	90 91 05 01 	lds	r25, 0x0105
+ 462:	03 97       	sbiw	r24, 0x03	; 3
+ 464:	08 f0       	brcs	.+2      	; 0x468 <__vector_30+0xd4>
+ 466:	38 c0       	rjmp	.+112    	; 0x4d8 <__vector_30+0x144>
+	    write_instruction(0xCF); _delay_ms(10);
+ 468:	8f ec       	ldi	r24, 0xCF	; 207
+ 46a:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 46e:	80 e4       	ldi	r24, 0x40	; 64
+ 470:	9c e9       	ldi	r25, 0x9C	; 156
+ 472:	01 97       	sbiw	r24, 0x01	; 1
+ 474:	f1 f7       	brne	.-4      	; 0x472 <__vector_30+0xde>
+	    write_data('%'); _delay_ms(100);
+ 476:	85 e2       	ldi	r24, 0x25	; 37
+ 478:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 47c:	88 ee       	ldi	r24, 0xE8	; 232
+ 47e:	93 e0       	ldi	r25, 0x03	; 3
+ 480:	20 e9       	ldi	r18, 0x90	; 144
+ 482:	31 e0       	ldi	r19, 0x01	; 1
+ 484:	f9 01       	movw	r30, r18
+ 486:	31 97       	sbiw	r30, 0x01	; 1
+ 488:	f1 f7       	brne	.-4      	; 0x486 <__vector_30+0xf2>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 48a:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 48c:	d9 f7       	brne	.-10     	; 0x484 <__vector_30+0xf0>
+	    write_data('5'); _delay_ms(100);
+ 48e:	85 e3       	ldi	r24, 0x35	; 53
+ 490:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 494:	88 ee       	ldi	r24, 0xE8	; 232
+ 496:	93 e0       	ldi	r25, 0x03	; 3
+ 498:	20 e9       	ldi	r18, 0x90	; 144
+ 49a:	31 e0       	ldi	r19, 0x01	; 1
+ 49c:	f9 01       	movw	r30, r18
+ 49e:	31 97       	sbiw	r30, 0x01	; 1
+ 4a0:	f1 f7       	brne	.-4      	; 0x49e <__vector_30+0x10a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 4a2:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 4a4:	d9 f7       	brne	.-10     	; 0x49c <__vector_30+0x108>
+	    write_data('2'); _delay_ms(100);
+ 4a6:	82 e3       	ldi	r24, 0x32	; 50
+ 4a8:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 4ac:	88 ee       	ldi	r24, 0xE8	; 232
+ 4ae:	93 e0       	ldi	r25, 0x03	; 3
+ 4b0:	20 e9       	ldi	r18, 0x90	; 144
+ 4b2:	31 e0       	ldi	r19, 0x01	; 1
+ 4b4:	f9 01       	movw	r30, r18
+ 4b6:	31 97       	sbiw	r30, 0x01	; 1
+ 4b8:	f1 f7       	brne	.-4      	; 0x4b6 <__vector_30+0x122>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 4ba:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 4bc:	d9 f7       	brne	.-10     	; 0x4b4 <__vector_30+0x120>
+	    write_data(' '); _delay_ms(100);
+ 4be:	80 e2       	ldi	r24, 0x20	; 32
+ 4c0:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 4c4:	88 ee       	ldi	r24, 0xE8	; 232
+ 4c6:	93 e0       	ldi	r25, 0x03	; 3
+ 4c8:	20 e9       	ldi	r18, 0x90	; 144
+ 4ca:	31 e0       	ldi	r19, 0x01	; 1
+ 4cc:	f9 01       	movw	r30, r18
+ 4ce:	31 97       	sbiw	r30, 0x01	; 1
+ 4d0:	f1 f7       	brne	.-4      	; 0x4ce <__vector_30+0x13a>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 4d2:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 4d4:	d9 f7       	brne	.-10     	; 0x4cc <__vector_30+0x138>
+ 4d6:	bc c0       	rjmp	.+376    	; 0x650 <__vector_30+0x2bc>
+   }
 
-000001fa <_exit>:
- 1fa:	f8 94       	cli
+   else if(measure <= 4){
+ 4d8:	80 91 04 01 	lds	r24, 0x0104
+ 4dc:	90 91 05 01 	lds	r25, 0x0105
+ 4e0:	05 97       	sbiw	r24, 0x05	; 5
+ 4e2:	08 f0       	brcs	.+2      	; 0x4e6 <__vector_30+0x152>
+ 4e4:	38 c0       	rjmp	.+112    	; 0x556 <__vector_30+0x1c2>
+	   write_instruction(0xCF); _delay_ms(10);
+ 4e6:	8f ec       	ldi	r24, 0xCF	; 207
+ 4e8:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 4ec:	80 e4       	ldi	r24, 0x40	; 64
+ 4ee:	9c e9       	ldi	r25, 0x9C	; 156
+ 4f0:	01 97       	sbiw	r24, 0x01	; 1
+ 4f2:	f1 f7       	brne	.-4      	; 0x4f0 <__vector_30+0x15c>
+	   write_data('%'); _delay_ms(100);
+ 4f4:	85 e2       	ldi	r24, 0x25	; 37
+ 4f6:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 4fa:	88 ee       	ldi	r24, 0xE8	; 232
+ 4fc:	93 e0       	ldi	r25, 0x03	; 3
+ 4fe:	20 e9       	ldi	r18, 0x90	; 144
+ 500:	31 e0       	ldi	r19, 0x01	; 1
+ 502:	f9 01       	movw	r30, r18
+ 504:	31 97       	sbiw	r30, 0x01	; 1
+ 506:	f1 f7       	brne	.-4      	; 0x504 <__vector_30+0x170>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 508:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 50a:	d9 f7       	brne	.-10     	; 0x502 <__vector_30+0x16e>
+	   write_data('0'); _delay_ms(100);
+ 50c:	80 e3       	ldi	r24, 0x30	; 48
+ 50e:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 512:	88 ee       	ldi	r24, 0xE8	; 232
+ 514:	93 e0       	ldi	r25, 0x03	; 3
+ 516:	20 e9       	ldi	r18, 0x90	; 144
+ 518:	31 e0       	ldi	r19, 0x01	; 1
+ 51a:	f9 01       	movw	r30, r18
+ 51c:	31 97       	sbiw	r30, 0x01	; 1
+ 51e:	f1 f7       	brne	.-4      	; 0x51c <__vector_30+0x188>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 520:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 522:	d9 f7       	brne	.-10     	; 0x51a <__vector_30+0x186>
+	   write_data('5'); _delay_ms(100);
+ 524:	85 e3       	ldi	r24, 0x35	; 53
+ 526:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 52a:	88 ee       	ldi	r24, 0xE8	; 232
+ 52c:	93 e0       	ldi	r25, 0x03	; 3
+ 52e:	20 e9       	ldi	r18, 0x90	; 144
+ 530:	31 e0       	ldi	r19, 0x01	; 1
+ 532:	f9 01       	movw	r30, r18
+ 534:	31 97       	sbiw	r30, 0x01	; 1
+ 536:	f1 f7       	brne	.-4      	; 0x534 <__vector_30+0x1a0>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 538:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 53a:	d9 f7       	brne	.-10     	; 0x532 <__vector_30+0x19e>
+	   write_data(' '); _delay_ms(100);
+ 53c:	80 e2       	ldi	r24, 0x20	; 32
+ 53e:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 542:	88 ee       	ldi	r24, 0xE8	; 232
+ 544:	93 e0       	ldi	r25, 0x03	; 3
+ 546:	20 e9       	ldi	r18, 0x90	; 144
+ 548:	31 e0       	ldi	r19, 0x01	; 1
+ 54a:	f9 01       	movw	r30, r18
+ 54c:	31 97       	sbiw	r30, 0x01	; 1
+ 54e:	f1 f7       	brne	.-4      	; 0x54c <__vector_30+0x1b8>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 550:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 552:	d9 f7       	brne	.-10     	; 0x54a <__vector_30+0x1b6>
+ 554:	7d c0       	rjmp	.+250    	; 0x650 <__vector_30+0x2bc>
+   }
 
-000001fc <__stop_program>:
- 1fc:	ff cf       	rjmp	.-2      	; 0x1fc <__stop_program>
+   else if(measure <= 6){
+ 556:	80 91 04 01 	lds	r24, 0x0104
+ 55a:	90 91 05 01 	lds	r25, 0x0105
+ 55e:	07 97       	sbiw	r24, 0x07	; 7
+ 560:	08 f0       	brcs	.+2      	; 0x564 <__vector_30+0x1d0>
+ 562:	38 c0       	rjmp	.+112    	; 0x5d4 <__vector_30+0x240>
+	   write_instruction(0xCF); _delay_ms(10);
+ 564:	8f ec       	ldi	r24, 0xCF	; 207
+ 566:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 56a:	80 e4       	ldi	r24, 0x40	; 64
+ 56c:	9c e9       	ldi	r25, 0x9C	; 156
+ 56e:	01 97       	sbiw	r24, 0x01	; 1
+ 570:	f1 f7       	brne	.-4      	; 0x56e <__vector_30+0x1da>
+	   write_data('%'); _delay_ms(100);
+ 572:	85 e2       	ldi	r24, 0x25	; 37
+ 574:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 578:	88 ee       	ldi	r24, 0xE8	; 232
+ 57a:	93 e0       	ldi	r25, 0x03	; 3
+ 57c:	20 e9       	ldi	r18, 0x90	; 144
+ 57e:	31 e0       	ldi	r19, 0x01	; 1
+ 580:	f9 01       	movw	r30, r18
+ 582:	31 97       	sbiw	r30, 0x01	; 1
+ 584:	f1 f7       	brne	.-4      	; 0x582 <__vector_30+0x1ee>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 586:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 588:	d9 f7       	brne	.-10     	; 0x580 <__vector_30+0x1ec>
+	   write_data('5'); _delay_ms(100);
+ 58a:	85 e3       	ldi	r24, 0x35	; 53
+ 58c:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 590:	88 ee       	ldi	r24, 0xE8	; 232
+ 592:	93 e0       	ldi	r25, 0x03	; 3
+ 594:	20 e9       	ldi	r18, 0x90	; 144
+ 596:	31 e0       	ldi	r19, 0x01	; 1
+ 598:	f9 01       	movw	r30, r18
+ 59a:	31 97       	sbiw	r30, 0x01	; 1
+ 59c:	f1 f7       	brne	.-4      	; 0x59a <__vector_30+0x206>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 59e:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 5a0:	d9 f7       	brne	.-10     	; 0x598 <__vector_30+0x204>
+	   write_data('7'); _delay_ms(100);
+ 5a2:	87 e3       	ldi	r24, 0x37	; 55
+ 5a4:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 5a8:	88 ee       	ldi	r24, 0xE8	; 232
+ 5aa:	93 e0       	ldi	r25, 0x03	; 3
+ 5ac:	20 e9       	ldi	r18, 0x90	; 144
+ 5ae:	31 e0       	ldi	r19, 0x01	; 1
+ 5b0:	f9 01       	movw	r30, r18
+ 5b2:	31 97       	sbiw	r30, 0x01	; 1
+ 5b4:	f1 f7       	brne	.-4      	; 0x5b2 <__vector_30+0x21e>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 5b6:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 5b8:	d9 f7       	brne	.-10     	; 0x5b0 <__vector_30+0x21c>
+	   write_data(' '); _delay_ms(100);
+ 5ba:	80 e2       	ldi	r24, 0x20	; 32
+ 5bc:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 5c0:	88 ee       	ldi	r24, 0xE8	; 232
+ 5c2:	93 e0       	ldi	r25, 0x03	; 3
+ 5c4:	20 e9       	ldi	r18, 0x90	; 144
+ 5c6:	31 e0       	ldi	r19, 0x01	; 1
+ 5c8:	f9 01       	movw	r30, r18
+ 5ca:	31 97       	sbiw	r30, 0x01	; 1
+ 5cc:	f1 f7       	brne	.-4      	; 0x5ca <__vector_30+0x236>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 5ce:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 5d0:	d9 f7       	brne	.-10     	; 0x5c8 <__vector_30+0x234>
+ 5d2:	3e c0       	rjmp	.+124    	; 0x650 <__vector_30+0x2bc>
+   }
+
+   else if(measure > 6){
+ 5d4:	80 91 04 01 	lds	r24, 0x0104
+ 5d8:	90 91 05 01 	lds	r25, 0x0105
+ 5dc:	07 97       	sbiw	r24, 0x07	; 7
+ 5de:	08 f4       	brcc	.+2      	; 0x5e2 <__vector_30+0x24e>
+ 5e0:	37 c0       	rjmp	.+110    	; 0x650 <__vector_30+0x2bc>
+	   write_instruction(0xCF); _delay_ms(10);
+ 5e2:	8f ec       	ldi	r24, 0xCF	; 207
+ 5e4:	0e 94 67 00 	call	0xce	; 0xce <write_instruction>
+ 5e8:	80 e4       	ldi	r24, 0x40	; 64
+ 5ea:	9c e9       	ldi	r25, 0x9C	; 156
+ 5ec:	01 97       	sbiw	r24, 0x01	; 1
+ 5ee:	f1 f7       	brne	.-4      	; 0x5ec <__vector_30+0x258>
+	   write_data('%'); _delay_ms(100);
+ 5f0:	85 e2       	ldi	r24, 0x25	; 37
+ 5f2:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 5f6:	88 ee       	ldi	r24, 0xE8	; 232
+ 5f8:	93 e0       	ldi	r25, 0x03	; 3
+ 5fa:	20 e9       	ldi	r18, 0x90	; 144
+ 5fc:	31 e0       	ldi	r19, 0x01	; 1
+ 5fe:	f9 01       	movw	r30, r18
+ 600:	31 97       	sbiw	r30, 0x01	; 1
+ 602:	f1 f7       	brne	.-4      	; 0x600 <__vector_30+0x26c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 604:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 606:	d9 f7       	brne	.-10     	; 0x5fe <__vector_30+0x26a>
+	   write_data('0'); _delay_ms(100);
+ 608:	80 e3       	ldi	r24, 0x30	; 48
+ 60a:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 60e:	88 ee       	ldi	r24, 0xE8	; 232
+ 610:	93 e0       	ldi	r25, 0x03	; 3
+ 612:	20 e9       	ldi	r18, 0x90	; 144
+ 614:	31 e0       	ldi	r19, 0x01	; 1
+ 616:	f9 01       	movw	r30, r18
+ 618:	31 97       	sbiw	r30, 0x01	; 1
+ 61a:	f1 f7       	brne	.-4      	; 0x618 <__vector_30+0x284>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 61c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 61e:	d9 f7       	brne	.-10     	; 0x616 <__vector_30+0x282>
+	   write_data('0'); _delay_ms(100);
+ 620:	80 e3       	ldi	r24, 0x30	; 48
+ 622:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 626:	88 ee       	ldi	r24, 0xE8	; 232
+ 628:	93 e0       	ldi	r25, 0x03	; 3
+ 62a:	20 e9       	ldi	r18, 0x90	; 144
+ 62c:	31 e0       	ldi	r19, 0x01	; 1
+ 62e:	f9 01       	movw	r30, r18
+ 630:	31 97       	sbiw	r30, 0x01	; 1
+ 632:	f1 f7       	brne	.-4      	; 0x630 <__vector_30+0x29c>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 634:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 636:	d9 f7       	brne	.-10     	; 0x62e <__vector_30+0x29a>
+	   write_data('1'); _delay_ms(100);
+ 638:	81 e3       	ldi	r24, 0x31	; 49
+ 63a:	0e 94 73 00 	call	0xe6	; 0xe6 <write_data>
+ 63e:	88 ee       	ldi	r24, 0xE8	; 232
+ 640:	93 e0       	ldi	r25, 0x03	; 3
+ 642:	20 e9       	ldi	r18, 0x90	; 144
+ 644:	31 e0       	ldi	r19, 0x01	; 1
+ 646:	f9 01       	movw	r30, r18
+ 648:	31 97       	sbiw	r30, 0x01	; 1
+ 64a:	f1 f7       	brne	.-4      	; 0x648 <__vector_30+0x2b4>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+ 64c:	01 97       	sbiw	r24, 0x01	; 1
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+ 64e:	d9 f7       	brne	.-10     	; 0x646 <__vector_30+0x2b2>
+   }
+
+ 	LED_WaterLev(measure);
+ 650:	80 91 04 01 	lds	r24, 0x0104
+ 654:	90 91 05 01 	lds	r25, 0x0105
+ 658:	0e 94 b6 01 	call	0x36c	; 0x36c <LED_WaterLev>
+
+   sei();
+ 65c:	78 94       	sei
+}
+ 65e:	ff 91       	pop	r31
+ 660:	ef 91       	pop	r30
+ 662:	bf 91       	pop	r27
+ 664:	af 91       	pop	r26
+ 666:	9f 91       	pop	r25
+ 668:	8f 91       	pop	r24
+ 66a:	7f 91       	pop	r23
+ 66c:	6f 91       	pop	r22
+ 66e:	5f 91       	pop	r21
+ 670:	4f 91       	pop	r20
+ 672:	3f 91       	pop	r19
+ 674:	2f 91       	pop	r18
+ 676:	0f 90       	pop	r0
+ 678:	0b be       	out	0x3b, r0	; 59
+ 67a:	0f 90       	pop	r0
+ 67c:	0f be       	out	0x3f, r0	; 63
+ 67e:	0f 90       	pop	r0
+ 680:	1f 90       	pop	r1
+ 682:	18 95       	reti
+
+00000684 <_exit>:
+ 684:	f8 94       	cli
+
+00000686 <__stop_program>:
+ 686:	ff cf       	rjmp	.-2      	; 0x686 <__stop_program>

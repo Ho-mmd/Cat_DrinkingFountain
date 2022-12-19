@@ -1,0 +1,98 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/delay.h>
+
+#define sbi (PORTX, BitX) PORTX |= (1<<BitX)
+#define cbi (PORTX, BitX) PORTX &= ~(1<<BitX)
+
+volatile unsigned long weight = 0;
+volatile unsigned long offset = 0;
+volatile int offset_flag = 0;
+
+unsigned long ReadCout();
+void UART0_TX(unsigned char data);
+void UART0_TX_int(unsigned long data);
+
+int main() {
+	cli();
+	
+	DDRA = 0x02;
+	DDRE = 0x02;
+
+	UCSR0C = 0x07;
+	UCSR0B = 0x98;
+
+	UBRR0H = 0x00;
+	UBRR0L = 0x67;
+	
+	sei();	
+
+	while(1) {
+		weight = ReadCout() / 1024;
+		UART0_TX(0x64);
+		UART0_TX('\n');
+	}
+	return 0;	
+}
+
+void UART0_TX(unsigned char data) {
+	while(!(UCSR1A & 0x20));
+	UDR0 = data;
+}
+
+void UART0_TX_int(unsigned long data) {
+	unsigned long temp = 0;
+
+	temp = data/10000;
+	UART0_TX(temp + 48);
+	temp = (data%10000)/1000;
+	UART0_TX(temp + 48);
+	temp = (data%1000)/100;
+	UART0_TX(temp + 48);
+	temp = (data%100)/10;
+	UART0_TX(temp + 48);
+	temp = data%10;
+	UART0_TX(temp + 48);	
+}
+
+unsigned long ReadCout() {
+	unsigned long sum = 0, count = 0, data1 = 0, data2 = 0;
+
+	for(int i = 0; i < 32; i++) {
+		PORTA = 0x01;
+
+		count = 0;
+
+		while(PINA == 0x01);
+
+		for(int j = 0; j < 24; j++) {
+			PORTA = 0x03;
+			count = count <<1;
+			PORTA = 0x01;
+			if(PINA == 0x01)
+				count++;
+		}
+
+		PORTA = 0x03;
+		count = count^0x10;
+		PORTA = 0x01;
+
+		sum += count;
+	}
+	
+	data1 = sum / 32;
+	
+	if(offset_flag == 0) {
+		offset = data1;
+		offset_flag = 1;
+	}
+	if(data1 > offset)
+		data2 = data1 - offset;
+	else
+		data2 = 0;
+
+	return data2;
+
+}
+
+

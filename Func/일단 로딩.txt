@@ -1,0 +1,109 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/delay.h>
+
+volatile unsigned char cnt = 0;
+volatile unsigned int flag = 0;
+volatile unsigned int ADC_ReLED;
+volatile unsigned char ADC_LLED, ADC_HLED;
+volatile unsigned int ADC_ReWLev, percent3;
+volatile unsigned char ADC_LWLev, ADC_HWLev;
+
+//LED(v)
+
+void ADC_LED();
+
+int main(void) {
+	
+	cli();
+
+	DDRF = 0x00; //AD input
+	DDRB = 0xFF;
+	DDRD = 0xF0;	
+
+	TCCR0 = (0<<FOC0) | (1<<WGM00) | (1<<COM01) | (1<<COM00) | (0<<WGM01) | (0<<CS02) | (0<<CS01) | (1<<CS00 ); //PWM
+
+	sei();
+
+	TIMSK = 0x04;
+	TCCR1A = 0x00; 
+	TCCR1B = 0x05; //clk select
+
+	TCNT1H = 0xFF; //초기에 overflow 발생시기 당김
+	TCNT1L = 0xC0;
+
+	ADMUX = 0x00;
+	ADCSRA = 0x83;
+	
+	do {
+		
+	} while (1);
+
+	return 0;
+}
+
+ISR(TIMER1_OVF_vect) { 
+	cli();
+
+	TCNT1H = 0xFF; //0.01초 (10ms, 100Hz)
+	TCNT1L = 0x62;
+
+	ADC_LED();		
+
+	ADC_WaterLevel();
+
+	OCR0 = 10; //Water Pump Power Control
+
+	sei();
+
+}
+
+void ADC_LED() {
+	ADMUX = 0x00;
+	ADCSRA |= 0x40; //ADC start, (1<<ADSC)
+
+	while(ADCSRA&0x40); //Wait until ADCSRA & 0x40 != 0, (1<<ADSC)
+
+	ADC_LLED = ADCL;  //Low value First
+	ADC_HLED = ADCH;
+	ADC_ReLED = (ADC_LLED + ADC_HLED * 256) / 30;
+
+	flag++;
+
+	if(flag < ADC_ReLED) {
+		PORTD = 0xF0;
+	} else {
+		PORTD = 0x00;
+		flag = 0;
+	}
+}
+
+void ADC_WaterLevel() {
+	ADMUX = 0x01;
+	ADCSRA |= 0x40; // ADC시작 하겠다
+
+	while ((ADCSRA & 0x10) == 0);//플래그 0이면 참이니까 못나옴
+
+	ADC_LWLev = ADCL;
+	ADC_HWLev = ADCH;
+	ADC_ReWLev = ADC_HWLev * 256 + ADC_LWLev;
+
+	percent3 = ADC_ReWLev;
+
+	if ((percent3) < 200)
+		PORTB = 0x01;
+	else if ((percent3) >= 200 && (percent3) < 300)
+		PORTB = 0x03;
+	else if ((percent3) >= 300 && (percent3) < 400)
+		PORTB = 0x07;
+	else if ((percent3) >= 400 && (percent3) < 500)
+		PORTB = 0x0F;
+	else if ((percent3) >= 500 && (percent3) < 600)
+		PORTB = 0x0F;
+	else if ((percent3) >= 600 && (percent3) < 700)
+		PORTB = 0x4F;
+	else if ((percent3) >= 700 && (percent3) < 800)
+		PORTB = 0x8F;
+	else if ((percent3) >= 800)
+		PORTB = 0xCF;	
+}
