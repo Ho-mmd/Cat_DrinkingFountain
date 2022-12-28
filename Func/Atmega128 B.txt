@@ -1,0 +1,205 @@
+#include<avr/io.h>
+#include<avr/interrupt.h>
+#include<util/delay.h>
+
+#define ENABLE PORTE |= 0x01; // LCD 모듈 허가
+#define DISABLE PORTE &= ~0x01;
+
+#define RS_SET PORTE |= 0x04; // 데이터 입력
+#define RS_CLI PORTE &= ~0x04; // 명령 입력
+
+#define RW_SET PORTE |= 0x02; // 읽기 
+#define RW_CLI PORTE &= ~0x02; // 쓰기
+
+volatile unsigned int measure, flag = 1; // CLCD & LED Variable
+void LED_WaterLev(unsigned int a);
+int Tx_Phone(unsigned int b);
+
+void write_instruction(unsigned char data) // 명령어 쓰기
+{
+    RS_CLI
+    RW_CLI
+    ENABLE
+    _delay_us(1);
+    PORTB = data;
+    _delay_us(1);
+    DISABLE
+}
+
+void write_data(unsigned char data) // 데이터 쓰기
+{
+    RS_SET
+    RW_CLI
+    ENABLE
+    PORTB = data;
+    _delay_us(1);
+    DISABLE
+    _delay_us(1);
+}
+
+void init_LCD(void) //초기화
+{
+   _delay_ms(75);
+    write_instruction(0x30);
+   _delay_ms(25);
+   write_instruction(0x30);
+   _delay_ms(5);
+   write_instruction(0x30);
+   _delay_ms(5);
+   write_instruction(0x38);
+   _delay_ms(5);
+   write_instruction(0x08);
+   _delay_ms(5);
+   write_instruction(0x01);
+   _delay_ms(5);
+   write_instruction(0x04);
+   _delay_ms(5);
+   write_instruction(0x0c);
+   _delay_ms(5);
+}
+
+int main(void)
+{
+   cli();
+   
+   DDRD = 0x08; //PD2 입력 PD3 출력(UART1)
+   DDRE = 0x07; //PE0,1,2 출력(CLCD)
+   DDRB = 0xFF; //PB 전체 출력(CLCD)
+   DDRF = 0x0F; //PF 0123 출력(LED)
+
+   UCSR1C = 0x07; //data size 8bit
+   UCSR1B = 0x98; //RX TX 가능
+
+   UBRR1H = 0x00;
+   UBRR1L = 0x2F; //7.3M clock, 9600 baud rate
+
+   _delay_ms(100);
+   init_LCD();   
+   
+   write_instruction(0x8B); _delay_ms(10);
+   write_data(':'); _delay_ms(100);
+   write_data('L'); _delay_ms(100);
+   write_data('E'); _delay_ms(100);
+   write_data('V'); _delay_ms(100);
+   write_data('E'); _delay_ms(100);
+   write_data('L'); _delay_ms(100);
+   write_data(' '); _delay_ms(100);
+   write_data('R'); _delay_ms(100);
+   write_data('E'); _delay_ms(100);
+   write_data('T'); _delay_ms(100);
+   write_data('A'); _delay_ms(100);
+   write_data('W'); _delay_ms(100);
+
+   TIMSK = 0x04; ////Timer_counter1 interrupt enabled
+   TCCR1A = 0x00; 
+   TCCR1B = 0x05; //Prescale 1024
+
+   TCNT1H = 0xFF; //Advance the Overflow Time
+   TCNT1L = 0xC0;
+
+   sei();
+
+   do{
+
+   }while(1);
+}
+
+ISR(USART1_RX_vect)
+{
+    cli();
+    measure = UDR1;
+
+    _delay_ms(100);
+ 
+    if(measure == 0){
+       write_instruction(0xCF); _delay_ms(10);
+       write_data('%'); _delay_ms(100);
+       write_data('0'); _delay_ms(100);
+       write_data(' '); _delay_ms(100);
+       write_data(' '); _delay_ms(100);
+    }
+
+    else if(measure <= 2){
+        write_instruction(0xCF); _delay_ms(10);
+        write_data('%'); _delay_ms(100);
+        write_data('5'); _delay_ms(100);
+        write_data('2'); _delay_ms(100);
+        write_data(' '); _delay_ms(100);
+      }
+
+    else if(measure <= 4){
+       write_instruction(0xCF); _delay_ms(10);
+       write_data('%'); _delay_ms(100);
+      write_data('0'); _delay_ms(100);
+       write_data('5'); _delay_ms(100);
+       write_data(' '); _delay_ms(100);
+    }
+
+    else if(measure <= 6){
+       write_instruction(0xCF); _delay_ms(10);
+       write_data('%'); _delay_ms(100);
+       write_data('5'); _delay_ms(100);
+      write_data('7'); _delay_ms(100);
+      write_data(' '); _delay_ms(100);
+    }
+
+   else if(measure > 6){
+      write_instruction(0xCF); _delay_ms(10);
+      write_data('%'); _delay_ms(100);
+      write_data('0'); _delay_ms(100);
+      write_data('0'); _delay_ms(100);
+      write_data('1'); _delay_ms(100);
+   }
+
+   LED_WaterLev(measure);
+
+   sei();
+}
+
+ISR(TIMER1_OVF_vect) { 
+   cli();
+
+   TCNT1H = 0xE1; //0.5초
+   TCNT1L = 0x7A;
+
+   if(measure == 0) {
+      if(flag) {
+         PORTF = 0x0F;
+         flag = 0;
+      } else {      
+         PORTF = 0x00;
+         flag = 1;
+      }
+   }
+
+   UDR1 = Tx_Phone(measure); ////Water Level Transmit
+
+   sei();
+
+}
+
+void LED_WaterLev(unsigned int a) {
+   if(0 < a && a <= 2)
+      PORTF = 0x01;
+   else if(a <= 4)
+      PORTF = 0x03;
+   else if(a <= 6)
+      PORTF = 0x07;
+   else if(a > 6)
+      PORTF = 0x0F;
+}
+
+int Tx_Phone(unsigned int b) {
+   while(!(UCSR0A & 0x20)); ////Ready to receive new data
+
+   if(b == 0)
+      return 0; //0
+   else if(b <= 2)
+      return 37; //25
+   else if(b <= 4)
+      return 80; //50
+   else if(b <= 6)
+      return 117; //75
+   else if(b > 6)
+      return 70; //F
+}
