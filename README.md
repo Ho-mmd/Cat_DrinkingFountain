@@ -1,2 +1,14 @@
 # AntigraCatWaterPyri
-Microprocessor Project(atmega128)
+
+Automatic Drinking Fountain for Cat by using Atmega128
+
+- Project Duration 2022.12 ~ 2022.12
+- Project Member: 4
+
+- Using Strobo Effect
+
+- 12V LED Strip, 12V Water Pump, CLCD, Bluetooth Module, Water Level Sensor, LED, Motor Driver, Mosfets
+
+![diagram](https://user-images.githubusercontent.com/55338823/209818093-7fb2fa7e-311e-4c62-aafe-f2ed9580f61a.PNG)
+
+
