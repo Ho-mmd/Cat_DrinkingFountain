@@ -2,7 +2,7 @@
 
 Automatic Drinking Fountain for Cat by using Atmega128
 
-- Project Duration 2022.12 ~ 2022.12
+- Project Duration 2022.9 ~ 2022.12
 - Project Member: 4
 
 - Using Strobo Effect
